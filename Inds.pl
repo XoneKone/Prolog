@@ -34,11 +34,20 @@ r_str(X,A,B,N,K):- K1 is K+1,append(B,[X],B1), get0(X1),r_str(X1,A,B1,N,K1).
 write_str([]):-!.
 write_str([H|T]):-put(H),write_str(T).
 
-ind3:-read_str(A,N),write_str(A),new_list(A,B),write_str(B).
+ind3:-read_str(A,N),write_str(A),nl,new_list(A,B),write_str(B).
 
-new_list([H|T],B):-Count_el(T,Count,H),delete_el(T,H),append()
+new_list(A,B):-new_list(A,[],B).
+new_list([],B,B):-!.
+new_list([H|T],C,B):-count_el([H|T],Count,H),name(Count,X),append(C,[H],C1),append(C1,X,C2),delete_el([H|T],H,Nlist),new_list(Nlist,C2,B).
 
-Count_el(A,Count,El):-Count_el(A,1,Count,El).
-Count_el([],Count,Count,_):-!.
-Count_el([El|T],Z,Count,El):- Z1 is Z+1,Count_el(T,Z1,Count,El),!.
-Count_el([_|T],Z,Count,El):-Count_el(T,Z,Count,El).
+count_el(A,Count,El):-count_el(A,0,Count,El).
+count_el([],Count,Count,_):-!.
+count_el([El|T],Z,Count,El):- Z1 is Z+1,count_el(T,Z1,Count,El),!.
+count_el([_|T],Z,Count,El):-count_el(T,Z,Count,El).
+
+delete_el(A,El,Nlist):-delete_el(A,El,[],Nlist).
+delete_el([],El,Nlist,Nlist):-!.
+delete_el([El|T],El,Z,Nlist):-delete_el(T,El,Z,Nlist),!.
+delete_el([H|T],El,Z,Nlist):-append(Z,[H],Z1),delete_el(T,El,Z1,Nlist).
+
+
