@@ -50,4 +50,30 @@ delete_el([],El,Nlist,Nlist):-!.
 delete_el([El|T],El,Z,Nlist):-delete_el(T,El,Z,Nlist),!.
 delete_el([H|T],El,Z,Nlist):-append(Z,[H],Z1),delete_el(T,El,Z1,Nlist).
 
+in_list([El|_],El).
+in_list([_|T],El):-in_list(T,El).
+
+
+ind4:-Students =[_,_,_,_,_],
+		in_list(Students,[sergey,_,riga]),
+
+		(in_list(Students,[sergey,penza,_]);
+		 in_list(Students,[sergey,harkov,_]);
+		 in_list(Students,[sergey,moscow,_])
+		),
+
+		in_list(Students,[boris,riga,penza]),
+		in_list(Students,[victor,lvov,moscow]),
+		in_list(Students,[grigoriy,_,harkov]),
+
+		(
+		 in_list(Students,[grigoriy,penza,_]);
+		 in_list(Students,[grigoriy,moscow,_])
+		),
+
+		in_list(Students,[leonid,harkov,lvov]),		
+		in_list(Students,[_,penza,harkov]),
+		in_list(Students,[Who,moscow,Rod]),!,
+		write(Students),
+		nl,write(Who),nl,write(Rod).
 
