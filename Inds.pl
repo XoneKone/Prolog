@@ -43,12 +43,12 @@ new_list([H|T],C,B):-count_el([H|T],Count,H),name(Count,X),append(C,[H],C1),appe
 count_el(A,Count,El):-count_el(A,0,Count,El).
 count_el([],Count,Count,_):-!.
 count_el([El|T],Z,Count,El):- Z1 is Z+1,count_el(T,Z1,Count,El),!.
-count_el([_|T],Z,Count,El):-count_el(T,Z,Count,El).
+count_el([_|T],Z,Count,El):-count_el([],Z,Count,El).
 
 delete_el(A,El,Nlist):-delete_el(A,El,[],Nlist).
 delete_el([],El,Nlist,Nlist):-!.
 delete_el([El|T],El,Z,Nlist):-delete_el(T,El,Z,Nlist),!.
-delete_el([H|T],El,Z,Nlist):-append(Z,[H],Z1),delete_el(T,El,Z1,Nlist).
+delete_el(A,El,Z,Nlist):-delete_el([],El,A,Nlist),!.
 
 in_list([El|_],El).
 in_list([_|T],El):-in_list(T,El).
