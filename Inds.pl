@@ -34,7 +34,10 @@ r_str(X,A,B,N,K):- K1 is K+1,append(B,[X],B1), get0(X1),r_str(X1,A,B1,N,K1).
 write_str([]):-!.
 write_str([H|T]):-put(H),write_str(T).
 
-ind3:-read_str(A,N),write_str(A),nl,new_list(A,B),write_str(B).
+write_str(A,B,Length1,Length2):-Length1>Length2,write_str(B),!.
+write_str(A,B,Length1,Length2):-write_str(A).
+
+ind3:-read_str(A,N),new_list(A,B),length_list(A,Length1),length_list(B,Length2),write_str(A,B,Length1,Length2).
 
 new_list(A,B):-new_list(A,[],B).
 new_list([],B,B):-!.
