@@ -56,9 +56,12 @@ delete_el(A,El,Z,Nlist):-delete_el([],El,A,Nlist),!.
 in_list([El|_],El).
 in_list([_|T],El):-in_list(T,El).
 
+unique([]):-!.
+unique([Head|Tail]):-in_list(Tail,Head),!,fail.
+unique([_|Tail]):-unique(Tail).
 
 ind4:-Students =[_,_,_,_,_],
-		in_list(Students,[sergey,_,riga]),
+		in_list(Students,[sergey,Xs,riga]),
 
 		(in_list(Students,[sergey,penza,_]);
 		 in_list(Students,[sergey,harkov,_]);
@@ -67,15 +70,22 @@ ind4:-Students =[_,_,_,_,_],
 
 		in_list(Students,[boris,riga,penza]),
 		in_list(Students,[victor,lvov,moscow]),
-		in_list(Students,[grigoriy,_,harkov]),
+		in_list(Students,[grigoriy,Xg,harkov]),
 
 		(
 		 in_list(Students,[grigoriy,penza,_]);
 		 in_list(Students,[grigoriy,moscow,_])
 		),
 
-		in_list(Students,[leonid,harkov,lvov]),		
-		in_list(Students,[_,penza,harkov]),
+		in_list(Students,[leonid,Xl,lvov]),
+		(in_list(Students,[leonid,moscow,_]);
+			in_list(Students,[leonid,harkov,_])),
+
+		in_list(Students,[_,penza,Xl]),
+		
+	
+		unique([Xs,riga,lvov,Xl,Xg]),
+
 		in_list(Students,[Who,moscow,Rod]),!,
 		write(Students),
 		nl,write(Who),nl,write(Rod).
