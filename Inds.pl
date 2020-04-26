@@ -60,33 +60,37 @@ unique([]):-!.
 unique([Head|Tail]):-in_list(Tail,Head),!,fail.
 unique([_|Tail]):-unique(Tail).
 
-ind4:-Students =[_,_,_,_,_],
-		in_list(Students,[sergey,Xs,riga]),
+city(riga).
+city(penza).
+city(lvov).
+city(harkov).
+city(moscow).
 
-		(in_list(Students,[sergey,penza,_]);
-		 in_list(Students,[sergey,harkov,_]);
-		 in_list(Students,[sergey,moscow,_])
-		),
+name(sergey).
+name(boris).
+name(victor).
+name(grigoriy).
+name(leonid).
 
-		in_list(Students,[boris,riga,penza]),
-		in_list(Students,[victor,lvov,moscow]),
-		in_list(Students,[grigoriy,Xg,harkov]),
+ind4:- Students = [student(X,Xcity,Bxcity),student(Y,Ycity,Bycity),student(Z,Zcity,Bzcity),
+student(W,Wcity,Bwcity),student(V,Vcity,Bvcity)],
 
-		(
-		 in_list(Students,[grigoriy,penza,_]);
-		 in_list(Students,[grigoriy,moscow,_])
-		),
+name(X), name(Y),name(Z),name(W),name(V), unique([X,Y,Z,W,V]),
 
-		in_list(Students,[leonid,Xl,lvov]),
-		(in_list(Students,[leonid,moscow,_]);
-			in_list(Students,[leonid,harkov,_])),
+city(Xcity),city(Ycity),city(Zcity),city(Wcity),city(Vcity), unique([Xcity,Ycity,Zcity,Wcity,Vcity]),
 
-		in_list(Students,[_,penza,Xl]),
-		
-	
-		unique([Xs,riga,lvov,Xl,Xg]),
+city(Bxcity),city(Bycity),city(Bzcity),city(Bwcity),city(Bvcity), unique([Bxcity,Bycity,Bzcity,Bwcity,Bvcity]),
 
-		in_list(Students,[Who,moscow,Rod]),!,
-		write(Students),
-		nl,write(Who),nl,write(Rod).
+in_list(Students,student(sergey,_,riga)),
+in_list(Students,student(boris,riga,penza)),
+in_list(Students,student(victor,lvov,moscow)),
+in_list(Students,student(grigoriy,_,harkov)),
+in_list(Students,student(leonid,P,_)),
+in_list(Students,student(_,penza,P)),
+not(in_list(Students,student(_,L,L))),
+
+in_list(Students,student(Who,moscow,_)),!,
+write(Students),nl,
+write(Who).
+
 
