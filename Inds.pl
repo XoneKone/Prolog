@@ -112,4 +112,39 @@ in_list(Students,student(Who,moscow,_)),!,
 write(Students),nl,
 write(Who).
 
+% 5-ая индивидуалка
+
+ind5:-make_alot(Set,[1,2,3,4,5,6,7,8]),sochet(Sub_set,Set,5),sum_list(Sub_set,S), S is 20, perm(Res,Sub_set),
+check(Res),read(;).
+
+check(A):-check(A,0).
+
+check(A,Number):-indexof(A,Number,X), X < 8, Number1 is Number+1,
+indexof(A,Number1,X1),X1 < 7, Number2 is Number1+1,
+indexof(A,Number2,X2),X2 < 6, Number3 is Number2+1,
+indexof(A,Number3,X3),X3 < 5, Number4 is Number3+1,
+indexof(A,Number4,X4),X4 < 4.
+
+indexof([Head|_],0,Head):-!.
+indexof([_|Tail],I,X):-I1 is I-1,indexof(Tail,I1,X).
+
+sum_list([],0):-!.
+sum_list([Head|Tail],S):-sum_list(Tail,S1), S is S1+Head.
+
+in_list_exlude([El|T],El,T).
+in_list_exlude([H|T],El,[H|Tail]):-in_list_exlude(T,El,Tail).
+
+sochet([],_,0):-!.
+sochet([H|Sub_set],[H|Set],K):-K1 is K-1, sochet(Sub_set,Set,K1).
+sochet(Sub_set,[_|Set],K):-sochet(Sub_set,Set,K).
+
+make_alot(A,Set,K):-make_alot(A,Set,K,K).
+make_alot([],[],_,_):-!.
+make_alot(Sub_set,[H|T],K,0):-make_alot(Sub_set,T,K,K),!.
+make_alot([H|Tail],[H|T],K,I):-I1 is I-1,make_alot(Tail,[H|T],K,I1).
+
+perm([],[]).
+perm(Set,[El|Tail]):-in_list_exlude(El,Set,Set_excluded),perm(Set_excluded,Tail).
+
+
 
