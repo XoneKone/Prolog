@@ -154,3 +154,42 @@ clear_file(File):-
 	open(File,write,S),
 	write(S,""),
 	close(S).
+
+
+
+%% 6-ая индивидуалка
+
+read_str(A):-get0(X),r_str(X,A,[]).
+
+del_1st([H|T],T).
+
+r_str(10,A,A):-!.
+r_str(X,A,B):-append(B,[X],B1),get0(X1),r_str(X1,A,B1).
+
+get_graph_edges(V,E):-see('vertices.txt'),get_V(V),seen,write("Vertexes"),nl,write(V),nl,write("Edges"),nl,see('edges.txt'),get_edges(V,E),seen,write(E).
+
+get_V(V):-read(N),N1 is N+1,get_V(V1,N1),del_1st(V1,V).
+get_V([],0):-!.
+get_V([H|T],N):-read_str(X),name(H,X),N1 is N-1,get_V(T,N1).
+
+get_edges(V,E):-read(M),get0(X),get_edges(V,E,[],M,0).
+get_edges(V,E,E,M,M):-!.
+get_edges(V,E,Edges,M,Count):-get_edge(V,Edge),append(Edges,[Edge],E1),Count1 is Count+1,get_edges(V,E,E1,M,Count1).
+
+get_edge(V,[V1,V2]):-read_str(X),name(V1,X),check_vertex(V,V1),
+                     read_str(Y),name(V2,Y),check_vertex(V,V2).
+
+check_vertex([V1|_],V1):-!.
+check_vertex([_|T],V1):-check_vertex(T,V1).
+
+razm(0,_,[]).
+razm(N,L,[H|Tail]):-N>0, N1 is N-1, in_list_exlude(H,L,R),razm(N1,R,Tail).
+
+
+ind6:-get_graph_edges(V,E),nl,transitive_closure(E,[],Etr),write(Etr).
+
+transitive_closure(E,E1,Etr):-razm(2,E,Ecomb),check_transitive(Ecomb,EdgeTr),append(E1,[EdgeTr],Etr).
+
+
+check_transitive([[H|T],Ed],EdgeTr):- check_transitive([T,Ed],EdgeTr),!.
+
