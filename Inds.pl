@@ -192,4 +192,4 @@ transitive_closure(E,E1,Etr):-razm(2,E,Ecomb),check_transitive(Ecomb,EdgeTr),app
 
 
 check_transitive([[H|T],Ed],EdgeTr):- check_transitive([T,Ed],EdgeTr),!.
-check_transitive([H,[]])
+
