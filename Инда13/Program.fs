@@ -3,32 +3,12 @@ open System.Windows.Forms
 open System.Drawing
 
 let form = new Form()
-let label1 = new Label()
-let textBox1 = new TextBox()
 let label2 = new Label()
 let label3 = new Label()
 let textBox2 = new TextBox()
 let richTextBox1 = new RichTextBox()
 let button1 = new Button()
 form.SuspendLayout()
-// 
-// label1
-// 
-label1.AutoSize <- true
-
-label1.Location <-new Point(29, 24)
-label1.Name <- "label1"
-label1.Size <- new Size(188, 19)
-label1.TabIndex <- 0
-label1.Text <- "Введите кол-во элементов"
-           // 
-           // textBox1
-           //
-
-textBox1.Location <- new Point(223, 24)
-textBox1.Name <- "textBox1"
-textBox1.Size <- new Size(184, 26)
-textBox1.TabIndex <- 1
            // 
            // label2
            // 
@@ -57,6 +37,7 @@ textBox2.Location <- new Point(172, 79)
 textBox2.Name <- "textBox2"
 textBox2.Size <- new Size(294, 26)
 textBox2.TabIndex <- 4
+textBox2.Text <- ""
            // 
            // richTextBox1
            // 
@@ -83,23 +64,60 @@ form.Controls.Add(richTextBox1)
 form.Controls.Add(textBox2)
 form.Controls.Add(label3)
 form.Controls.Add(label2)
-form.Controls.Add(textBox1)
-form.Controls.Add(label1)
 form.Name <- "Form1"
 form.Text <- "Form1"
 form.ResumeLayout(false)
 form.PerformLayout()
 
-let list = textBox2.Text
+
+
+let sumpred list el = 
+    let rec sumpred_t list el sum = 
+         match list with
+         | [] -> 0
+         | h::tail -> if(h=el) then sum
+                      else sumpred_t tail el (sum+h)
+    sumpred_t list el 0
+
+
+let mulpred index list el =
+    let rec mulpred_t ind el mul = function
+        [] -> true
+        | h::tail -> if(h = el && ind =index) then true
+                     else if (el % h =0) then mulpred_t (ind + 1) el (mul*h) tail
+                                            else false
+    mulpred_t 0 el 1 list                  
+
+let countbigger list el =
+        let rec countbigger_t list  el count =
+             match list with
+             | [] -> count
+             | h::t -> if (el<h) then countbigger_t t el (count + 1)
+                       else countbigger_t t el count
+        countbigger_t list el 0
+
+let solve list1 s =  
+    let res = List.choose(fun x ->
+      match x with
+        | (a,b) when (b>sumpred list1 b) && (List.exists(fun p->p*p =b) list1) && (mulpred a list1 b ) -> Some(b,sumpred list1 b,countbigger list1 b)
+        |_->None) s
+    res
 
 
 
+button1.Click.Add(fun evArgs -> 
+    richTextBox1.Clear()
+    let str = textBox2.Text.Split(' ')
+    let list1 = [for i in str->System.Convert.ToInt32(i)]
+    let s = List.indexed(list1)    
+    let result = solve list1 s
+    List.iter(fun x -> richTextBox1.AppendText(x.ToString() + "\n")) result |> ignore
+    )
 
-
-button1.Click.Add(fun evArgs -> richTextBox1.Text = list |> ignore)
 
 
 Application.Run(form)
+
 //****************************************//
 //****************************************//
 //****************************************//
