@@ -25,7 +25,7 @@ let ind9 (n:bigint) =
 
 [<EntryPoint>]
 let main argv =
-    let Ans =ind9 10000000I
+    let Ans =ind9 100000I
     printf "\n%A" Ans
     let z = System.Console.ReadKey()
     0 
