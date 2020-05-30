@@ -71,13 +71,13 @@ form.PerformLayout()
 
 
 
-let sumpred list el = 
-    let rec sumpred_t list el sum = 
+let sumpred index list el = 
+    let rec sumpred_t ind list el sum = 
          match list with
          | [] -> 0
-         | h::tail -> if(h=el) then sum
-                      else sumpred_t tail el (sum+h)
-    sumpred_t list el 0
+         | h::tail -> if(h=el && ind = index) then sum
+                      else sumpred_t (ind+1) tail el (sum+h)
+    sumpred_t 0 list el 0
 
 
 let mulpred index list el =
@@ -99,7 +99,7 @@ let countbigger list el =
 let solve list1 s =  
     let res = List.choose(fun x ->
       match x with
-        | (a,b) when (b>sumpred list1 b) && (List.exists(fun p->p*p =b) list1) && (mulpred a list1 b ) -> Some(b,sumpred list1 b,countbigger list1 b)
+        | (a,b) when (b>sumpred a list1 b) && (List.exists(fun p->p*p =b) list1) && (mulpred a list1 b ) -> Some(b,sumpred a list1 b,countbigger list1 b)
         |_->None) s
     res
 
